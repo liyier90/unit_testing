@@ -1,22 +1,7 @@
 \documentclass[english,10pt,aspectratio=169]{beamer}
 
-\usepackage{amsmath}
-\usepackage[T1]{fontenc}
-\usepackage{listings}
-\usepackage{tikz}
-\usepackage{ulem}
-
-\mode<presentation>
-\usetheme{Singapore}
-\usecolortheme{orchid}
-
-\lstdefinestyle{PythonStyle}{
-	basicstyle=\scriptsize\ttfamily,
-	language=Python,
-	numbers=left,
-	tabsize=4
-}
-\lstset{basicstyle=\small,style=PythonStyle}
+\input{include/packagecommand}
+\input{include/definition}
 
 \def\presentationtitle{\textbf{
 	Spending less time bug fixing by \\
@@ -31,10 +16,15 @@
 
 \begin{document}
 
+\input{include/codelistings}
+
 \begin{frame}
 	\titlepage
 \end{frame}
 
+% To begin with a quote from the author, "There's much more to unit testing than
+% the act of writing tests." Hopefully this presentation will be able to get you
+% to think more about how to craft unit tests.
 \begin{frame}
 	\begin{quote}
 		There's much more to unit testing than the act of writing tests.
@@ -44,6 +34,16 @@
 	\end{quote}
 \end{frame}
 
+% The goal of unit testing is to enable sustainable growth of the software
+% project. The figure below show the growth dynamics of a typical project without
+% tests. You start off quick, completing user stories after user stories, without
+% having to "waste" writing these pesky tests.
+% But eventually progress slows to a halt, the code base has grown complex and
+% disorganized, fixing one bug introduces several others, and changing one part
+% of the software breaks several others. And it's hard to bring it back to
+% stability.
+% This is where tests help, they help detect regressions and ensure existing
+% functionalities work even after refactoring or introducing new features.
 \begin{frame}{The goal of unit testing}
 	To enable \textbf{sustainable} growth of software project.
 	\begin{columns}[T]
@@ -55,6 +55,11 @@
 	\end{columns}
 \end{frame}
 
+% But it's not enough to just write tests. Badly written tests still result in
+% the same picture. They help slow down the initial decline in development speed
+% but doesn't really change much overall. Before we look at what makes a good unit
+% test, let's first look at code coverage metrics which can help you gauge if you
+% are testing enough.
 \begin{frame}{The goal of unit testing}
 	To enable \textbf{sustainable} growth of software project.
 	\begin{columns}[T]
@@ -67,59 +72,86 @@
 	\end{columns}
 \end{frame}
 
-\defverbatim[colored]\coveragecode{%
-\begin{lstlisting}[linewidth=0.5\textwidth]
-def is_fizzbuzz(num: int) -> bool:
-	if num % 3 and num % 5:
-		return True
-	return some_var
-
-def test_fizzbuzz():
-	result = is_fizzbuzz(3)
-	assert result
-\end{lstlisting}
-}
+% The common belief is that the higher the coverage number, the better the test
+% suite. Unfortunately, it's not that simple. While 10% is a good indication
+% that you aren't testing enough, 100% coverage doesn't guarantee you have a
+% good quality test suite. We take a look at a few coverage metrics to see why
+% this is so.
+% We will discuss 4 types of coverage metrics. Path and condition coverage are
+% struck out because while they're nice to think about, they're impractical to
+% actually implement.
+% < describe the code and coverage stats > 
 \begin{frame}{Coverage metrics}
-	Statement vs Branch vs \sout{Path} vs \sout{Condition}
+	\focus{Statement} vs Branch vs \sout{Path} vs \sout{Condition}
 	\begin{columns}[T]
-		\begin{column}[]{0.5\textwidth}
+		\begin{column}[]{0.6\textwidth}
 			\begin{minipage}{\linewidth}
 				\coveragecode
 			\end{minipage}
 		\end{column}
-		\begin{column}[]{0.5\textwidth}
+		\begin{column}[]{0.4\textwidth}
 			\begin{flalign*}
- 				&\frac{Number\ of\ statements\ executed}{Total\ number\ of\ statements}\\
+				&\frac{Number\ of\ statements\ executed}{Total\ number\ of\ statements}\\
 				\approx\ &67 \%
 			\end{flalign*}
 		\end{column}
 	\end{columns}
 \end{frame}
 
-\defverbatim[colored]\coveragecodetwo{%
-\begin{lstlisting}[linewidth=0.5\textwidth]
-def is_fizzbuzz(num: int) -> bool:
-	return True if num % 3 and num % 5 else some_var
-
-def test_fizzbuzz():
-	result = is_fizzbuzz(3)
-	assert result
-\end{lstlisting}
-}
 \begin{frame}{Coverage metrics}
-	Statement vs Branch vs \sout{Path} vs \sout{Condition}
+	\focus{Statement} vs Branch vs \sout{Path} vs \sout{Condition}
 	\begin{columns}[T]
-		\begin{column}[]{0.5\textwidth}
+		\begin{column}[]{0.6\textwidth}
 			\begin{minipage}{\linewidth}
 				\coveragecodetwo
 			\end{minipage}
 		\end{column}
-		\begin{column}[]{0.5\textwidth}
+		\begin{column}[]{0.4\textwidth}
 			\begin{flalign*}
- 				&\frac{Number\ of\ statements\ executed}{Total\ number\ of\ statements}\\
+				&\frac{Number\ of\ statements\ executed}{Total\ number\ of\ statements}\\
 				=\ &100 \%
 			\end{flalign*}
 		\end{column}
 	\end{columns}
 \end{frame}
+
+\begin{frame}{Coverage metrics}
+	Statement vs \focus{Branch} vs \sout{Path} vs \sout{Condition}
+	\begin{columns}[T]
+		\begin{column}[]{0.6\textwidth}
+			\begin{minipage}{\linewidth}
+				\coveragecodetwo
+			\end{minipage}
+		\end{column}
+		\begin{column}[]{0.4\textwidth}
+			\begin{flalign*}
+				&\frac{Branches\ traversed}{Total\ number\ of\ branches}\\
+				=\ &50 \%
+			\end{flalign*}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Coverage metrics}
+	Statement vs \focus{Branch} vs \sout{Path} vs \sout{Condition}
+	\begin{columns}[T]
+		\begin{column}[]{0.6\textwidth}
+			\begin{minipage}{\linewidth}
+				\coveragecodetwo
+			\end{minipage}
+		\end{column}
+		\begin{column}[]{0.4\textwidth}
+			\begin{tikzpicture}[node distance=2cm]
+				\node (start) [startstop] {\small{Start}};
+				\node (decision) [decision, below of=start, text width=1cm, align=center] {\scriptsize{Indivisible by 3 and 5?}};
+				\node (out1) [io, below of=decision] {\small{True}};
+				\node (out2) [io, right of=decision, xshift=1cm] {\small{some\_var}};
+				\draw [arrow] (start) -- (decision);
+				\draw [arrow] (decision) -- node[anchor=east] {yes} (out1);
+				\draw [arrow] (decision) -- node[anchor=south] {no} (out2);
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+\end{frame}
+
 \end{document}

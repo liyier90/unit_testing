@@ -1,0 +1,26 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% code listings 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\defverbatim[colored]\coveragecode{%
+\begin{lstlisting}[linewidth=0.5\textwidth]
+def is_fizzbuzz(num: int) -> bool:
+	if num % 3 and num % 5:
+		return True
+	return some_var
+
+def test_fizzbuzz():
+	result = is_fizzbuzz(3)
+	assert result
+\end{lstlisting}
+}
+
+\defverbatim[colored]\coveragecodetwo{%
+\begin{lstlisting}[linewidth=0.5\textwidth]
+def is_fizzbuzz(num: int) -> bool:
+	return True if num % 3 and num % 5 else some_var
+
+def test_fizzbuzz():
+	result = is_fizzbuzz(3)
+	assert result
+\end{lstlisting}
+}
