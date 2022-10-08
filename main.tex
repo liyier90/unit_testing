@@ -4,13 +4,13 @@
 \input{include/definition}
 
 \def\presentationtitle{\textbf{
-	Spending less time bug fixing by \\
-	spending more time unit testing
+  Spending less time bug fixing by \\
+  spending more time unit testing
 }}
 
 \title{\large\presentationtitle}
 \author{\textbf{
-	<Name>
+  <Name>
 }}
 \date{}
 
@@ -19,19 +19,19 @@
 \input{include/codelistings}
 
 \begin{frame}
-	\titlepage
+  \titlepage
 \end{frame}
 
 % To begin with a quote from the author, "There's much more to unit testing than
 % the act of writing tests." Hopefully this presentation will be able to get you
 % to think more about how to craft unit tests.
 \begin{frame}
-	\begin{quote}
-		There's much more to unit testing than the act of writing tests.
-		\begin{flushright}
-			\tiny{---Khorikov, \textup{Unit Testing Principles, Practices, and Patterns}, 3}
-		\end{flushright}
-	\end{quote}
+  \begin{quote}
+    There's much more to unit testing than the act of writing tests.
+    \begin{flushright}
+      \tiny{---Khorikov, \textup{Unit Testing Principles, Practices, and Patterns}, 3}
+    \end{flushright}
+  \end{quote}
 \end{frame}
 
 % The goal of unit testing is to enable sustainable growth of the software
@@ -45,14 +45,14 @@
 % This is where tests help, they help detect regressions and ensure existing
 % functionalities work even after refactoring or introducing new features.
 \begin{frame}{The goal of unit testing}
-	To enable \textbf{sustainable} growth of software project.
-	\begin{columns}[T]
-		\begin{column}{0.5\textwidth}
-			\includegraphics[width=\textwidth]{images/vs_no_test.png}
-		\end{column}
-		\begin{column}{0.5\textwidth}
-		\end{column}
-	\end{columns}
+  To enable \textbf{sustainable} growth of software project.
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \includegraphics[width=\textwidth]{images/vs_no_test.png}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 % But it's not enough to just write tests. Badly written tests still result in
@@ -61,15 +61,15 @@
 % test, let's first look at code coverage metrics which can help you gauge if you
 % are testing enough.
 \begin{frame}{The goal of unit testing}
-	To enable \textbf{sustainable} growth of software project.
-	\begin{columns}[T]
-		\begin{column}{0.5\textwidth}
-			\includegraphics[width=\textwidth]{images/vs_no_test.png}
-		\end{column}
-		\begin{column}{0.5\textwidth}
-			\includegraphics[width=\textwidth]{images/vs_bad_test.png}
-		\end{column}
-	\end{columns}
+  To enable \textbf{sustainable} growth of software project.
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \includegraphics[width=\textwidth]{images/vs_no_test.png}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \includegraphics[width=\textwidth]{images/vs_bad_test.png}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 % The common belief is that the higher the coverage number, the better the test
@@ -82,76 +82,180 @@
 % actually implement.
 % < describe the code and coverage stats > 
 \begin{frame}{Coverage metrics}
-	\focus{Statement} vs Branch vs \sout{Path} vs \sout{Condition}
-	\begin{columns}[T]
-		\begin{column}[]{0.6\textwidth}
-			\begin{minipage}{\linewidth}
-				\coveragecode
-			\end{minipage}
-		\end{column}
-		\begin{column}[]{0.4\textwidth}
-			\begin{flalign*}
-				&\frac{Number\ of\ statements\ executed}{Total\ number\ of\ statements}\\
-				\approx\ &67 \%
-			\end{flalign*}
-		\end{column}
-	\end{columns}
+  \focus{Statement} vs Branch vs \sout{Path} vs \sout{Condition}
+  \begin{columns}[T]
+    \begin{column}[]{0.6\textwidth}
+      \begin{minipage}{\linewidth}
+        \coveragecode
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.4\textwidth}
+      \begin{flalign*}
+        &\frac{Number\ of\ statements\ executed}{Total\ number\ of\ statements}\\
+        \approx\ &67 \%
+      \end{flalign*}
+    \end{column}
+  \end{columns}
 \end{frame}
 
+% One simple trick to improve our statement coverage metric to refactor the
+% function into a conditional expression. Now we get 100% statement coverage
+% without having to write any extra tests. This just shows how easy it is to game
+% the coverage metrics.
 \begin{frame}{Coverage metrics}
-	\focus{Statement} vs Branch vs \sout{Path} vs \sout{Condition}
-	\begin{columns}[T]
-		\begin{column}[]{0.6\textwidth}
-			\begin{minipage}{\linewidth}
-				\coveragecodetwo
-			\end{minipage}
-		\end{column}
-		\begin{column}[]{0.4\textwidth}
-			\begin{flalign*}
-				&\frac{Number\ of\ statements\ executed}{Total\ number\ of\ statements}\\
-				=\ &100 \%
-			\end{flalign*}
-		\end{column}
-	\end{columns}
+  \focus{Statement} vs Branch vs \sout{Path} vs \sout{Condition}
+  \begin{columns}[T]
+    \begin{column}[]{0.6\textwidth}
+      \begin{minipage}{\linewidth}
+        \coveragecodetwo
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.4\textwidth}
+      \begin{flalign*}
+        &\frac{Number\ of\ statements\ executed}{Total\ number\ of\ statements}\\
+        =\ &100 \%
+      \end{flalign*}
+    \end{column}
+  \end{columns}
 \end{frame}
 
+% Branch coverage considers how many control structures are traversed by at least
+% one test in the test suite. And reports 50% coverage no matter how we refactor
+% the function.
 \begin{frame}{Coverage metrics}
-	Statement vs \focus{Branch} vs \sout{Path} vs \sout{Condition}
-	\begin{columns}[T]
-		\begin{column}[]{0.6\textwidth}
-			\begin{minipage}{\linewidth}
-				\coveragecodetwo
-			\end{minipage}
-		\end{column}
-		\begin{column}[]{0.4\textwidth}
-			\begin{flalign*}
-				&\frac{Branches\ traversed}{Total\ number\ of\ branches}\\
-				=\ &50 \%
-			\end{flalign*}
-		\end{column}
-	\end{columns}
+  Statement vs \focus{Branch} vs \sout{Path} vs \sout{Condition}
+  \begin{columns}[T]
+    \begin{column}[]{0.6\textwidth}
+      \begin{minipage}{\linewidth}
+        \coveragecodetwo
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.4\textwidth}
+      \begin{flalign*}
+        &\frac{Branches\ traversed}{Total\ number\ of\ branches}\\
+        =\ &50 \%
+      \end{flalign*}
+    \end{column}
+  \end{columns}
 \end{frame}
 
+% To help visualize this metric, the flowchart shows the possible paths of the
+% function. And the test_fizzbuzz() function only traversed through one of them.
 \begin{frame}{Coverage metrics}
-	Statement vs \focus{Branch} vs \sout{Path} vs \sout{Condition}
-	\begin{columns}[T]
-		\begin{column}[]{0.6\textwidth}
-			\begin{minipage}{\linewidth}
-				\coveragecodetwo
-			\end{minipage}
-		\end{column}
-		\begin{column}[]{0.4\textwidth}
-			\begin{tikzpicture}[node distance=2cm]
-				\node (start) [startstop] {\small{Start}};
-				\node (decision) [decision, below of=start, text width=1cm, align=center] {\scriptsize{Indivisible by 3 and 5?}};
-				\node (out1) [io, below of=decision] {\small{True}};
-				\node (out2) [io, right of=decision, xshift=1cm] {\small{some\_var}};
-				\draw [arrow] (start) -- (decision);
-				\draw [arrow] (decision) -- node[anchor=east] {yes} (out1);
-				\draw [arrow] (decision) -- node[anchor=south] {no} (out2);
-			\end{tikzpicture}
-		\end{column}
-	\end{columns}
+  Statement vs \focus{Branch} vs \sout{Path} vs \sout{Condition}
+  \begin{columns}[T]
+    \begin{column}[]{0.6\textwidth}
+      \begin{minipage}{\linewidth}
+        \coveragecodetwo
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.4\textwidth}
+      \begin{tikzpicture}[node distance=2cm]
+        \node (start) [startstop] {\small{Start}};
+        \node (decision)
+          [decision, below of=start, text width=1cm, align=center]
+          {\scriptsize{Indivisible by 3 and 5?}};
+        \node (out1) [io, below of=decision] {\small{True}};
+        \node (out2) [io, right of=decision, xshift=1cm] {\small{some\_var}};
+        \draw [arrow] (start) -- (decision);
+        \draw [arrow] (decision) -- node[anchor=east] {yes} (out1);
+        \draw [arrow] (decision) -- node[anchor=south] {no} (out2);
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
 \end{frame}
 
+% This function has 3 if conditions each returning a different number. Branch
+% coverage requires 6 test cases. But does achieving 100% branch coverage
+% ensure that this function won't crash? What happens when all 3 conditions
+% evaluate to False? Path coverage ensures all paths are covered. It will test
+% path BDF and catch the bug. Although this will give you a very comprehensive
+% coverage of your code, 100% path coverage is impractical to aim for in reality.
+\begin{frame}{Coverage metrics}
+  Statement vs Branch vs \focus{\sout{Path}} vs \sout{Condition}
+  \begin{columns}[T]
+    \begin{column}[]{0.5\textwidth}
+      \begin{minipage}{\linewidth}
+        \coveragecodebranch
+        Possible paths:
+
+        ACE, ACF, ADE, ADF, BCE, BCF, BDE, BDF
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.5\textwidth}
+      \begin{tikzpicture}[node distance=1.3cm]
+        \node (start) [startstop] {\small{Start}};
+        \node (dec1) [decision, below of=start, aspect=3, yshift=1mm]
+          {\scriptsize{cond\_1?}};
+        \node (out11) [io, left of=dec1, xshift=-1.75cm, label={A}]
+          {\small{num = 1}};
+        \node (out12) [io, right of=dec1, xshift=1cm, label={B}] {\small{pass}};
+        \node (dec2) [decision, below of=dec1, aspect=3]
+          {\scriptsize{cond\_2?}};
+        \node (out21) [io, left of=dec2, xshift=-1.75cm, label={C}]
+          {\small{num = 2}};
+        \node (out22) [io, right of=dec2, xshift=1cm, label={D}] {\small{pass}};
+        \node (dec3) [decision, below of=dec2, aspect=3]
+          {\scriptsize{cond\_3?}};
+        \node (out31) [io, left of=dec3, xshift=-1.75cm, label={E}]
+          {\small{num = 3}};
+        \node (out32) [io, right of=dec3, xshift=1cm, label={F}] {\small{pass}};
+        \node (end) [startstop, below of=dec3] {\small{End}};
+        \draw [arrow] (start) -- (decision);
+        \draw [arrow] (dec1) -- node[anchor=south] {yes} (out11);
+        \draw [arrow] (dec1) -- node[anchor=south] {no} (out12);
+        \draw [arrow] (out11) |- ++(0, -5mm) -| (dec2);
+        \draw [arrow] (out12) |- ++(0, -5mm) -| (dec2);
+        \draw [arrow] (dec2) -- node[anchor=south] {yes} (out21);
+        \draw [arrow] (dec2) -- node[anchor=south] {no} (out22);
+        \draw [arrow] (out21) |- ++(0, -5mm) -| (dec3);
+        \draw [arrow] (out22) |- ++(0, -5mm) -| (dec3);
+        \draw [arrow] (dec3) -- node[anchor=south] {yes} (out31);
+        \draw [arrow] (dec3) -- node[anchor=south] {no} (out32);
+        \draw [arrow] (out31) |- ++(0, -5mm) -| (end);
+        \draw [arrow] (out32) |- ++(0, -5mm) -| (end);
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% The goal of condition coverage is to check individual outcomes for each logical
+% condition. Branch coverage requires only 2 test cases, but condition coverage
+% requires 4. Aiming for 100% conditional coverage is also impractical.
+% Say, a test suite achieved 100% on all coverage metrics for this is_fizzbuzz()
+% function, does that mean the test suite is guaranteed to cover all use cases
+% catch all bugs? What if the user supplies a string instead of a int?
+\begin{frame}{Coverage metrics}
+  Statement vs Branch vs \sout{Path} vs \focus{\sout{Condition}}
+  \begin{columns}[T]
+    \begin{column}[]{0.5\textwidth}
+      \begin{minipage}{\linewidth}
+        \coveragecode
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.5\textwidth}
+      \begin{center}
+        \begin{tabular}{ ccc }
+          \hline
+          \texttt{num \% 3} & \texttt{num \% 5} & \texttt{num \% 3 and num \% 5} \\
+          \hline
+          True & True & True \\
+          True & False & False \\
+          False & True & False \\
+          False & False & False \\
+          \hline
+        \end{tabular}
+      \end{center}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \begin{quote}
+    [C]overage metrics are a good negative indicator, but a bad positive one.
+    \begin{flushright}
+      \tiny{---Khorikov, \textup{Unit Testing Principles, Practices, and Patterns}, 15}
+    \end{flushright}
+  \end{quote}
+\end{frame}
 \end{document}

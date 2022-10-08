@@ -4,23 +4,40 @@
 \defverbatim[colored]\coveragecode{%
 \begin{lstlisting}[linewidth=0.5\textwidth]
 def is_fizzbuzz(num: int) -> bool:
-	if num % 3 and num % 5:
-		return True
-	return some_var
+    if num % 3 and num % 5:
+        return True
+    return some_var
 
 def test_fizzbuzz():
-	result = is_fizzbuzz(3)
-	assert result
+    result = is_fizzbuzz(3)
+    assert result
 \end{lstlisting}
 }
 
 \defverbatim[colored]\coveragecodetwo{%
 \begin{lstlisting}[linewidth=0.5\textwidth]
 def is_fizzbuzz(num: int) -> bool:
-	return True if num % 3 and num % 5 else some_var
+    return True if num % 3 and num % 5 else some_var
 
 def test_fizzbuzz():
-	result = is_fizzbuzz(3)
-	assert result
+    result = is_fizzbuzz(3)
+    assert result
+\end{lstlisting}
+}
+
+\defverbatim[colored]\coveragecodebranch{%
+\begin{lstlisting}[linewidth=0.5\textwidth]
+def generate_number(
+    cond_1: bool = True,
+    cond_2: bool = True,
+    cond_3: bool = True,
+) -> int:
+    if cond_1:
+        num = 1
+    if cond_2:
+        num = 2
+    if cond_3:
+        num = 3
+    return num
 \end{lstlisting}
 }
