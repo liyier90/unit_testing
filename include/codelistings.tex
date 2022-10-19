@@ -41,3 +41,51 @@ def generate_number(
     return num
 \end{lstlisting}
 }
+
+\defverbatim[colored]\aaapattern{%
+\begin{lstlisting}[linewidth=0.5\textwidth,basicstyle=\scriptsize]
+# A cohesive set of tests, optional
+class TestCalculator:
+
+    # Name of the unit test
+    def test_sum_of_two_numbers(self):
+        # Arrange
+        first = 10
+        second = 20
+        calculator = Calculator()
+
+        # Act
+        result = calculator.sum(first, second)
+
+        # Assert
+        assert result = = 30
+\end{lstlisting}
+}
+
+\defverbatim[colored]\avoidifpkd{%
+\begin{lstlisting}[linewidth=0.5\textwidth]
+def test_node_with_python_updates(self, req_file):
+    with TestCase.assertLogs("...logger") as cap:
+        assert check_requirements(
+            NODE, req_file
+        ) = = 2
+        for i, rec in enumerate(cap.records):
+            idx = int(i / 2)
+            if i = = 4:
+                assert (
+                    ``2 packages updated''
+                    in rec.getMessage()
+                )
+            elif i % 2 = = 0:
+                assert (
+                    f``{PY_PKGS[idx]} not found''
+                    in rec.getMessage()
+                )
+            else:
+                assert (
+                    f``pip install {PY_PKGS[idx]}''
+                    in rec.getMessage()
+                )
+\end{lstlisting}
+}
+

@@ -258,4 +258,92 @@
     \end{flushright}
   \end{quote}
 \end{frame}
+
+\begin{frame}{Definition of a unit test}
+  \begin{itemize}
+    \item Verifies a small piece of code,
+    \item Does it quickly, and
+    \item Does it in an isolated manner.
+  \end{itemize}
+
+  An integration test is a test that doesn't meet one of these criteria. End-to-end
+  tests are a subset of integration tests and usually include more dependencies.
+\end{frame}
+
+% A simple, uniform structure. Once you get used to it, it become easy to read and
+% understand any test. This will reduce maintenance cost.
+\begin{frame}{Anatomy of a unit test}
+  The AAA (3A) pattern, also Given-When-Then pattern.
+
+  \begin{columns}[T]
+    \begin{column}[]{0.5\textwidth}
+      \begin{minipage}{\linewidth}
+        \aaapattern
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.5\textwidth}
+      \begin{itemize}
+        \item In \textit{Arrange}, bring the system under test (SUT) to the a
+        desired state
+        \item In \textit{Act}, call the method on the SUT, pass the prepared
+        dependencies, and capture the output (if any).
+        \item In \textit{Assert}, verify the outcome. The outcome could be the
+        return value, the final state of the SUT, or the methods the SUT called
+        on its collaborators.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% If you have multiple act and assert, this is no longer a unit test but an
+% integration test. Refactor and extract each 'act" into a test of its own. But
+% having multiple act sections is an appropriate optimization technique for
+% integration tests.
+\begin{frame}{Things to avoid for unit tests}
+  \begin{columns}[T]
+    \begin{column}[]{0.5\textwidth}
+      \begin{minipage}{\linewidth}
+        \begin{center}
+          \begin{tikzpicture}[node distance=1.3cm]
+            \node (arrange1) [startstop] {\small{Arrange the test}};
+            \node (act1) [startstop, below of=arrange1] {\small{Act}};
+            \node (assert1) [startstop, below of=act1] {\small{Assert}};
+            \node (act2) [startstop, below of=assert1] {\small{Act some more}};
+            \node (assert2) [startstop, below of=act2] {\small{Assert again}};
+            \draw [arrow] (arrange1) -- (act1);
+            \draw [arrow] (act1) -- (assert1);
+            \draw [arrow] (assert1) -- (act2);
+            \draw [arrow] (act2) -- (assert2);
+          \end{tikzpicture}
+        \end{center}
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.5\textwidth}
+      \begin{itemize}
+        \item Avoid multiple arrange, act, and assert sections.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Having if statements is also an anti-pattern. If you have if statements in the
+% act section, if indicates the test is verifies too many things at once.
+% The code listing on the left also demonstrates why if statements should be
+% avoided in tests. Turns out, cap.records has only 4 elements, i == 4 never
+% got verified.
+\begin{frame}{Things to avoid for unit tests}
+  \begin{columns}[T]
+    \begin{column}[]{0.5\textwidth}
+      \begin{minipage}{\linewidth}
+        \avoidifpkd
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.5\textwidth}
+      \begin{itemize}
+        \item Avoid multiple arrange, act, and assert sections.
+        \item Avoid \texttt{if} statements. 
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
 \end{document}
