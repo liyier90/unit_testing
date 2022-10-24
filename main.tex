@@ -1,4 +1,4 @@
-\documentclass[english,10pt,aspectratio=169]{beamer}
+\documentclass[english,10pt,aspectratio=169,t]{beamer}
 
 \input{include/packagecommand}
 \input{include/definition}
@@ -26,12 +26,14 @@
 % the act of writing tests." Hopefully this presentation will be able to get you
 % to think more about how to craft unit tests.
 \begin{frame}
+  \vfill
   \begin{quote}
     There's much more to unit testing than the act of writing tests.
     \begin{flushright}
       \tiny{---Khorikov, \textup{Unit Testing Principles, Practices, and Patterns}, 3}
     \end{flushright}
   \end{quote}
+  \vfill
 \end{frame}
 
 % The goal of unit testing is to enable sustainable growth of the software
@@ -251,12 +253,14 @@
 \end{frame}
 
 \begin{frame}
+  \vfill
   \begin{quote}
     [C]overage metrics are a good negative indicator, but a bad positive one.
     \begin{flushright}
       \tiny{---Khorikov, \textup{Unit Testing Principles, Practices, and Patterns}, 15}
     \end{flushright}
   \end{quote}
+  \vfill
 \end{frame}
 
 \begin{frame}{Definition of a unit test}
@@ -342,6 +346,182 @@
       \begin{itemize}
         \item Avoid multiple arrange, act, and assert sections.
         \item Avoid \texttt{if} statements. 
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% Hurts readability, why is there valid and invalid next to each other?
+% What if we refactor is_delivery_valid(), do we need to rename all the tests?
+% Additional cognitive load to figure out what behavior this test is testing.
+\begin{frame}{Naming a unit test}
+  \begin{columns}[T]
+    \begin{column}[]{0.55\textwidth}
+      \begin{minipage}{\linewidth}
+        \rigidname
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.45\textwidth}
+      \begin{itemize}
+        \item A rigid convention such as \texttt{<method>\_<scenario>\_<expected>}
+        isn't as helpful as plain English
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Naming a unit test}
+  \begin{columns}[T]
+    \begin{column}[]{0.55\textwidth}
+      \begin{minipage}{\linewidth}
+        \rigidname
+        \verbosename
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.45\textwidth}
+      \begin{itemize}
+        \item A rigid convention such as \texttt{<method>\_<scenario>\_<expected>}
+        isn't as helpful as plain English
+        \item Should not be too verbose
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% "considered" can be removed without losing meaning. "should be" makes this sound
+% like a wish, can be replaced with "is" to represent that this is a fact about
+% the software we're developing. There is not need to avoid basic English grammar,
+% adding the article "a" helps this read like a normal sentence.
+\begin{frame}{Naming a unit test}
+  \begin{columns}[T]
+    \begin{column}[]{0.55\textwidth}
+      \begin{minipage}{\linewidth}
+        \rigidname
+        \verbosename
+        \concisename
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.45\textwidth}
+      \begin{itemize}
+        \item A rigid convention such as \texttt{<method>\_<scenario>\_<expected>}
+        isn't as helpful as plain English
+        \item Should not be too verbose
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Parametrizing tests}
+  \footnotesize{\textit{Parametrization, also spelled parameterization, parametrisation
+  or parameterisation, is the process of defining or choosing parameters.} --- Wikipedia}
+  \begin{columns}[T]
+    \begin{column}[]{0.5\textwidth}
+      \begin{minipage}{\linewidth}
+        \includegraphics[width=\textwidth]{images/parametrized_tests.png}
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.5\textwidth}
+      \begin{itemize}
+        \item The number of tests can become unmanageable if each component/behavior
+        of the application is tested with its own test.
+        \item Some (similar) behaviors can be grouped into a single test using
+        parametrization.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Parametrizing tests}
+  \begin{minipage}{\textwidth}
+    Behavior: The soonest allowed delivery date is two days from now. 
+  \end{minipage}
+  \vfill
+  \begin{minipage}{\textwidth}
+    In addition to \texttt{test\_delivery\_with\_a\_past\_date\_is\_invalid}, we
+    need to add three more:
+
+    \additionalbehavior
+
+    This would result in four test methods, with the only difference between them
+    being the delivery date.
+  \end{minipage}
+\end{frame}
+
+% This comes at a cost, it's now hard to figure out what facts the test method
+% represent.
+\begin{frame}{Parametrizing tests}
+  \begin{minipage}{\textwidth}
+    Behavior: The soonest allowed delivery date is two days from now. 
+  \end{minipage}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{minipage}{\textwidth}
+        \parametrizeall
+      \end{minipage}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Significantly reduce the amount of test code
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Parametrizing tests (meaningfully)}
+  \begin{minipage}{\textwidth}
+    Behavior: The soonest allowed delivery date is two days from now. 
+  \end{minipage}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{minipage}{\textwidth}
+        \parametrizesome
+      \end{minipage}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Significantly reduce the amount of test code
+        \item Do not ``over parametrize'' if the scenarios are complicated
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Using an assertion library (optional)}
+  \begin{minipage}{\textwidth}
+    An assertion library like \texttt{assertpy} can improve test readability by
+    making the assert section read like plain English.
+  \end{minipage}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{minipage}{\textwidth}
+        \assertionlibrary
+      \end{minipage}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Introduces additional dependencies
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Using an assertion library (optional)}
+  \begin{minipage}{\textwidth}
+    An assertion library like \texttt{assertpy} can improve test readability by
+    making the assert section read like plain English.
+  \end{minipage}
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{minipage}{\textwidth}
+        \assertionlibrary
+
+        Bonus: \texttt{Chai} assertion library
+        \chailibrary
+      \end{minipage}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item Introduces additional dependencies
       \end{itemize}
     \end{column}
   \end{columns}
