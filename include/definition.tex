@@ -2,3 +2,8 @@
 % commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\focus}[1]{\textcolor{blue}{#1}}
+
+\newcommand{\hideit}[1]{%
+  \only<0| handout:1>{\mbox{}}%
+  \invisible<0| handout:1>{#1}%
+}

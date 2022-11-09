@@ -1,4 +1,4 @@
-\documentclass[english,10pt,aspectratio=169,t]{beamer}
+\documentclass[english,handout,10pt,aspectratio=169,t]{beamer}
 
 \input{include/packagecommand}
 \input{include/definition}
@@ -525,5 +525,152 @@
       \end{itemize}
     \end{column}
   \end{columns}
+\end{frame}
+
+% There are three things to take into account for evaluating how well a test
+% protects against regression.
+\begin{frame}{Recognizing a good unit test}
+  \focus{The four pillars of a good unit test}
+  \begin{itemize}
+    \item Protection against regression
+    \begin{itemize}
+      \item Amount of code executed during the test
+      \item Complexity of that code
+      \item The code's domain significance
+    \end{itemize}
+    \item Resistance against refactoring
+    \item Fast feedback
+    \begin{itemize}
+      \item "Fast enough"
+      \item Can be run more often to detect regressions
+    \end{itemize}
+    \item Maintainability
+    \begin{itemize}
+      \item How hard is it to understand the test: Test code quality matters as
+      much as production code
+      \item How hard is it to run the test
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{The second pillar: Resistance to refactoring}
+  \begin{minipage}{\linewidth}
+    \textit{Refactoring} means changing existing code without modifying its
+    observable behavior.
+  \end{minipage}
+  \vfill
+  \hideit{
+    \begin{minipage}{\linewidth}
+      \focus{Scenario:} You developed a new feature and everything works great. The
+      feature is working as intended and all the tests are passing.
+
+      \medskip
+      
+      You decide to clean up the code before submitting the PR. Some refactoring here
+      and there, and the code ends up looking better than before.
+
+      \medskip
+      
+      Except one thing --- the tests are failing. But the feature is still working
+      perfectly, just as before. Turns out the tests are written in such a way that
+      they fail with any modifications to the underlying code.
+
+      \medskip
+
+      This situation is a \textit{false positive}.
+    \end{minipage}
+    \vfill
+    \begin{minipage}{\linewidth}
+      Why is this so important that it deserves its own slide?
+
+      \begin{itemize}
+        \item Enable sustainable project growth
+        \item Provide early warning to regressions
+        \item Give confidence that code changes won't lead to regressions
+      \end{itemize}
+    \end{minipage}
+  }
+\end{frame}
+
+\begin{frame}{The second pillar: Resistance to refactoring}
+  \begin{minipage}{\linewidth}
+    \textit{Refactoring} means changing existing code without modifying its
+    observable behavior.
+  \end{minipage}
+  \vfill
+  \begin{minipage}{\linewidth}
+    \focus{Scenario:} You developed a new feature and everything works great. The
+    feature is working as intended and all the tests are passing.
+
+    \medskip
+    
+    You decide to clean up the code before submitting the PR. Some refactoring here
+    and there, and the code ends up looking better than before.
+
+    \medskip
+    
+    Except one thing --- the tests are failing. But the feature is still working
+    perfectly, just as before. Turns out the tests are written in such a way that
+    they fail with any modifications to the underlying code.
+
+    \medskip
+
+    This situation is a \textit{false positive}.
+  \end{minipage}
+  \vfill
+  \hideit{
+    \begin{minipage}{\linewidth}
+      Why is this so important that it deserves its own slide?
+
+      \begin{itemize}
+        \item Enable sustainable project growth
+        \item Provide early warning to regressions
+        \item Give confidence that code changes won't lead to regressions
+      \end{itemize}
+    \end{minipage}
+  }
+\end{frame}
+
+% False positives interfere with these benefits as you no longer perceive it as a
+% reliable safety net. This may lead to fewer refactoring or more additional
+% manual testing even when the tests pass.
+\begin{frame}{The second pillar: Resistance to refactoring}
+  \begin{minipage}{\linewidth}
+    \textit{Refactoring} means changing existing code without modifying its
+    observable behavior.
+  \end{minipage}
+  \vfill
+  \begin{minipage}{\linewidth}
+    \focus{Scenario:} You developed a new feature and everything works great. The
+    feature is working as intended and all the tests are passing.
+
+    \medskip
+    
+    You decide to clean up the code before submitting the PR. Some refactoring here
+    and there, and the code ends up looking better than before.
+
+    \medskip
+    
+    Except one thing --- the tests are failing. But the feature is still working
+    perfectly, just as before. Turns out the tests are written in such a way that
+    they fail with any modifications to the underlying code.
+
+    \medskip
+
+    This situation is a \textit{false positive}.
+  \end{minipage}
+  \vfill
+  \begin{minipage}{\linewidth}
+    Why is this so important that it deserves its own slide?
+
+    \begin{itemize}
+      \item Enable sustainable project growth
+      \item Provide early warning to regressions
+      \item Give confidence that code changes won't lead to regressions
+    \end{itemize}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}{How to avoid false positives?}
 \end{frame}
 \end{document}

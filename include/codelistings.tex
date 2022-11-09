@@ -2,7 +2,7 @@
 % code listings 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \defverbatim[colored]\coveragecode{%
-\begin{lstlisting}[linewidth=0.5\textwidth]
+\begin{minted}[fontsize=\scriptsize]{python}
 def is_fizzbuzz(num: int) -> bool:
     if num % 3 and num % 5:
         return True
@@ -11,22 +11,22 @@ def is_fizzbuzz(num: int) -> bool:
 def test_fizzbuzz():
     result = is_fizzbuzz(3)
     assert result
-\end{lstlisting}
+\end{minted}
 }
 
 \defverbatim[colored]\coveragecodetwo{%
-\begin{lstlisting}[linewidth=0.5\textwidth]
+\begin{minted}[fontsize=\scriptsize]{python}
 def is_fizzbuzz(num: int) -> bool:
     return True if num % 3 and num % 5 else some_var
 
 def test_fizzbuzz():
     result = is_fizzbuzz(3)
     assert result
-\end{lstlisting}
+\end{minted}
 }
 
 \defverbatim[colored]\coveragecodebranch{%
-\begin{lstlisting}[linewidth=0.5\textwidth]
+\begin{minted}[fontsize=\scriptsize]{python}
 def generate_number(
     cond_1: bool = True,
     cond_2: bool = True,
@@ -39,14 +39,13 @@ def generate_number(
     if cond_3:
         num = 3
     return num
-\end{lstlisting}
+\end{minted}
 }
 
 \defverbatim[colored]\aaapattern{%
-\begin{lstlisting}[linewidth=0.5\textwidth,basicstyle=\scriptsize]
+\begin{minted}[fontsize=\scriptsize]{python}
 # A cohesive set of tests, optional
 class TestCalculator:
-
     # Name of the unit test
     def test_sum_of_two_numbers(self):
         # Arrange
@@ -58,34 +57,128 @@ class TestCalculator:
         result = calculator.sum(first, second)
 
         # Assert
-        assert result = = 30
-\end{lstlisting}
+        assert result == 30
+\end{minted}
 }
 
 \defverbatim[colored]\avoidifpkd{%
-\begin{lstlisting}[linewidth=0.5\textwidth]
+\begin{minted}[fontsize=\scriptsize]{python}
 def test_node_with_python_updates(self, req_file):
     with TestCase.assertLogs("...logger") as cap:
         assert check_requirements(
             NODE, req_file
-        ) = = 2
+        ) == 2
         for i, rec in enumerate(cap.records):
             idx = int(i / 2)
-            if i = = 4:
-                assert (
-                    ``2 packages updated''
-                    in rec.getMessage()
-                )
-            elif i % 2 = = 0:
-                assert (
-                    f``{PY_PKGS[idx]} not found''
-                    in rec.getMessage()
-                )
+            if i == 4:
+                assert "2 packages updated" in rec.getMessage()
+            elif i % 2 == 0:
+                assert f"{PY_PKGS[idx]} not found" in rec.getMessage()
             else:
-                assert (
-                    f``pip install {PY_PKGS[idx]}''
-                    in rec.getMessage()
-                )
-\end{lstlisting}
+                assert f"pip install {PY_PKGS[idx]}" in rec.getMessage()
+\end{minted}
 }
 
+\defverbatim[colored]\rigidname{%
+\begin{minted}[fontsize=\scriptsize]{python}
+def test_is_delivery_valid_invalid_date_returns_false():
+    sut = DeliveryService()
+    past_date = datetime.today() - timedelta(days=1)
+    delivery = Delivery(date=past_date)
+
+    is_valid = sut.is_delivery_valid(delivery)
+
+    assert not is_valid
+\end{minted}
+}
+
+\defverbatim[colored]\verbosename{%
+\begin{minted}[fontsize=\scriptsize]{python}
+def test_delivery_with_past_date_should_be_considered_invalid():
+    ...
+\end{minted}
+}
+
+\defverbatim[colored]\concisename{%
+\begin{minted}[fontsize=\scriptsize]{python}
+def test_delivery_with_a_past_date_is_invalid():
+    ...
+\end{minted}
+}
+
+\defverbatim[colored]\additionalbehavior{%
+\begin{minted}[fontsize=\scriptsize]{python}
+def test_delivery_for_today_is_invalid():
+    ...
+
+def test_delivery_for_tomorrow_is_invalid():
+    ...
+
+def test_the_soonest_delivery_date_is_two_days_from_now():
+    ...
+\end{minted}
+}
+
+\defverbatim[colored]\parametrizeall{%
+\begin{minted}[fontsize=\scriptsize]{python}
+@pytest.mark.parametrize(
+    "days_from_now,expected",
+    [(-1, False), (0, False), (1, False), (2, True)],
+)
+def test_can_detect_an_invalid_delivery_date(
+    days_from_now, expected
+):
+    sut = DeliveryService()
+    delivery_date = datetime.today() + timedelta(days=days_from_now)
+    delivery = Delivery(date=delivery_date)
+
+    is_valid = sut.is_delivery_valid(delivery)
+
+    assert is_valid == expected
+
+\end{minted}
+}
+
+\defverbatim[colored]\parametrizesome{%
+\begin{minted}[fontsize=\scriptsize]{python}
+@pytest.mark.parametrize("days_from_now", [-1, 0, 1])
+def test_detects_an_invalid_delivery_date(days_from_now):
+    ...
+
+    assert not is_valid
+
+
+def test_the_soonest_delivery_date_is_two_days_from_now():
+    ...
+
+    assert is_valid
+\end{minted}
+}
+
+\defverbatim[colored]\assertionlibrary{%
+\begin{minted}[fontsize=\scriptsize]{python}
+def test_sum_of_two_numbers():
+    ...
+
+    assert result == 30
+
+def test_sum_of_two_numbers():
+    ...
+
+    assert_that(result).is_equal_to(30)
+\end{minted}
+}
+
+\defverbatim[colored]\chailibrary{%
+\begin{minted}[fontsize=\scriptsize]{javascript}
+describe("Calculator", () => {
+    it("computes the sum of two number", () => {
+        const calculator = new Calculator();
+
+        const result calculator.sum(10, 20);
+
+        expect(result).to.be.equal(30);
+    });
+});
+\end{minted}
+}
