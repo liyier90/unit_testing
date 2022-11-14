@@ -1,9 +1,12 @@
 \usepackage{amsmath}
 \usepackage{array}
+\usepackage{colortbl}
 \usepackage[T1]{fontenc}
 \usepackage{minted}
+\usepackage{multirow}
 \usepackage{tikz}
 \usepackage{ulem}
+\usepackage{xcolor}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % beamer
@@ -12,10 +15,22 @@
 \usetheme{singapore}
 \usecolortheme{orchid}
 
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+\def\insertnavigation#1{\relax}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % tikz
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usetikzlibrary{shapes.geometric, arrows}
+\usetikzlibrary{arrows, calc, shapes.geometric, tikzmark}
 \tikzstyle{startstop} = [
 	rectangle,
 	rounded corners,

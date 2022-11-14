@@ -182,3 +182,57 @@ describe("Calculator", () => {
 });
 \end{minted}
 }
+
+\defverbatim[colored]\rendererimpl{%
+\begin{minted}[fontsize=\scriptsize]{python}
+@dataclass
+class Message:
+    header: str
+    body: str
+    footer: str
+
+class IRenderer(ABC):
+    @abstractmethod
+    def render(self, message: "Message") -> str:
+        """Renders the provided message."""
+
+class MessageRenderer(IRenderer):
+    def __init__(self) -> None:
+        self.sub_renderers = [HeaderRenderer(), BodyRenderer(), FooterRenderer()]
+
+    def render(self, message: "Message") -> str:
+        return "".join(renderer.render(message) for renderer in self.sub_renderers)
+
+class HeaderRenderer(IRenderer):
+    def render(self, message: "Message") -> str:
+        return f"<head>{message.header}</head>"
+
+...
+\end{minted}
+}
+
+\defverbatim[colored]\renderertestone{%
+\begin{minted}[fontsize=\scriptsize]{python}
+def test_message_renderer_uses_correct_sub_renderers():
+    sut = MessageRenderer()
+
+    sub_renderers = sut.sub_renderers
+
+    assert len(sub_renderers) == 3
+    assert isinstance(sub_renderers[0], HeaderRenderer)
+    assert isinstance(sub_renderers[1], BodyRenderer)
+    assert isinstance(sub_renderers[2], FooterRenderer)
+\end{minted}
+}
+
+\defverbatim[colored]\renderertesttwo{%
+\begin{minted}[fontsize=\scriptsize]{python}
+def test_message_renderer_renders_message():
+    sut = MessageRenderer()
+    message = Message("h", "b", "f")
+
+    html = sut.render(message)
+
+    assert html == "<head>h</head><body>b</body><foot>f</foot>"
+\end{minted}
+}

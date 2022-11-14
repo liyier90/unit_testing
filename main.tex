@@ -672,5 +672,274 @@
 \end{frame}
 
 \begin{frame}{How to avoid false positives?}
+  Number of false positives is directly related to how the test is structured.
+  \begin{itemize}
+    \item The more the test is coupled to the implementation detail, the more false
+    positives it generates.
+  \end{itemize}
+
+  \focus{Solution:} Verify the end result (observable behavior) the SUT delivers,
+  not the steps it takes to do that. The best way is to structure the test to tell
+  a story about the problem domain.
+\end{frame}
+
+\begin{frame}{Example: Testing MessageRenderer}
+  \rendererimpl
+\end{frame}
+
+\begin{frame}{Example: Testing MessageRenderer}
+  \renderertestone
+\end{frame}
+
+\begin{frame}{Example: Testing MessageRenderer}
+  \renderertestone
+
+  Does this really verify \texttt{MessageRenderer}'s observable behavior?
+  \begin{itemize}
+    \item What if you rearrange the sub-renderers?
+    \item What if you replace one of the sub-renderers?
+    \item What if you stop using sub-renderers and implement the rendering directly?
+  \end{itemize}
+  Does this affect the rendered HTML document? Does the test fail?
+\end{frame}
+
+\begin{frame}{Example: Testing MessageRenderer}
+  \renderertesttwo
+
+  This test treats \texttt{MessageRenderer} as a black box and is only interested
+  in its observable behavior.
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{images/observable_behavior_vs_implementation.png}
+  \end{center}
+\end{frame}
+
+% The relationship between the first and second pillar can be visualized in this
+% confusion matrix. "Functionality is" is the GT and "Test result" is the prediction.
+\begin{frame}{Dynamics between the first and second pillar}
+  \begin{columns}[T]
+    \begin{column}[]{0.55\textwidth}
+      \begin{minipage}{\linewidth}
+        \begingroup
+        \def\arraystretch{1.25}
+        \begin{tabular}{|l|l|l|l|}
+          \hline
+          \multicolumn{2}{|l|}{\multirow{2}{*}{}} & \multicolumn{2}{l|}{Functionality is} \\
+          \cline{3-4}
+          \multicolumn{1}{|l}{} & & Correct & Broken \\
+          \hline
+          \multirow{2}{*}[-0.7em]{\begin{tabular}{@{}l@{}}Test \\ result \end{tabular}} & Passes
+            & \cellcolor{lime}\begin{tabular}{@{}l@{}} Correct \\ inference \\ (TN) \end{tabular}
+            & \cellcolor{pink}\begin{tabular}{@{}l@{}} Type II \\ error \\ (FN) \end{tabular}\tikzmark{a} \\
+          \cline{2-4}
+          & Fails
+            & \cellcolor{pink}\begin{tabular}{@{}l@{}} Type I \\ error \\ (FP)\tikzmark{b} \end{tabular}
+            & \cellcolor{lime}\begin{tabular}{@{}l@{}} Correct \\ inference \\ (TP) \end{tabular} \\
+          \hline
+        \end{tabular}
+        \begin{tikzpicture}[remember picture, overlay]
+          \node [right=1.6cm,above=0.25cm,minimum width=0pt,text width=1.5cm] at ({pic cs:a}) (A) {Protection against regression};
+          \node [right=1.6cm,below=0.25cm,minimum width=0pt,text width=2cm] at ({pic cs:b}) (B) {Resistance to refactoring};
+          \draw [<-,out=5,in=270] ([xshift=15pt]{pic cs:a}) to (A);
+          \draw [<-,out=270,in=180] ([xshift=15pt]{pic cs:b}) to (B);
+        \end{tikzpicture}
+        \endgroup
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.45\textwidth}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% In the short term, FPs are not as bad as FN. The importance of refactoring is
+% not immediate, it increases gradually over time. Most people tend to focus
+% solely on improving the first pillar but this is not enough to build a valuable
+% test suite which helps sustain project growth.
+\begin{frame}{Dynamics between the first and second pillar}
+  \begin{columns}[T]
+    \begin{column}[]{0.55\textwidth}
+      \begin{minipage}{\linewidth}
+        \begingroup
+        \def\arraystretch{1.25}
+        \begin{tabular}{|l|l|l|l|}
+          \hline
+          \multicolumn{2}{|l|}{\multirow{2}{*}{}} & \multicolumn{2}{l|}{Functionality is} \\
+          \cline{3-4}
+          \multicolumn{1}{|l}{} & & Correct & Broken \\
+          \hline
+          \multirow{2}{*}[-0.7em]{\begin{tabular}{@{}l@{}}Test \\ result \end{tabular}} & Passes
+            & \cellcolor{lime}\begin{tabular}{@{}l@{}} Correct \\ inference \\ (TN) \end{tabular}
+            & \cellcolor{pink}\begin{tabular}{@{}l@{}} Type II \\ error \\ (FN) \end{tabular}\tikzmark{a} \\
+          \cline{2-4}
+          & Fails
+            & \cellcolor{pink}\begin{tabular}{@{}l@{}} Type I \\ error \\ (FP)\tikzmark{b} \end{tabular}
+            & \cellcolor{lime}\begin{tabular}{@{}l@{}} Correct \\ inference \\ (TP) \end{tabular} \\
+          \hline
+        \end{tabular}
+        \begin{tikzpicture}[remember picture, overlay]
+          \node [right=1.6cm,above=0.25cm,minimum width=0pt,text width=1.5cm] at ({pic cs:a}) (A) {Protection against regression};
+          \node [right=1.6cm,below=0.25cm,minimum width=0pt,text width=2cm] at ({pic cs:b}) (B) {Resistance to refactoring};
+          \draw [<-,out=5,in=270] ([xshift=15pt]{pic cs:a}) to (A);
+          \draw [<-,out=270,in=180] ([xshift=15pt]{pic cs:b}) to (B);
+        \end{tikzpicture}
+        \endgroup
+      \end{minipage}
+    \end{column}
+    \begin{column}[]{0.45\textwidth}
+      \begin{itemize}
+        \item How good the test is at indicating the \focus{presence} of bugs: Protection against regression
+        \item How good the test is at indicating the \focus{absence} of bugs: Resistance of refactoring
+      \end{itemize}
+      \includegraphics[width=\textwidth]{images/test_suite_fnfp.png}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% The first three pillars are mutually exclusive, you have to sacrifice one to
+% maximize the remaining two. Because of the multiplication principle in estimating
+% a test's value, you can't just forgo one of the attributes to focus on the
+% others.
+\begin{frame}{In search of an ideal test}
+  \begin{tikzpicture}
+    \begin{scope}[fill opacity=0.5]
+      \clip (0, 0) circle (2);
+      \fill[blue] (-1.5, -2.5) circle (2);
+    \end{scope}
+    \begin{scope}[fill opacity=0.5]
+      \clip (-1.5, -2.5) circle (2);
+      \fill[blue] (1.5, -2.5) circle (2);
+    \end{scope}
+    \begin{scope}[fill opacity=0.5]
+      \clip (1.5, -2.5) circle (2);
+      \fill[blue] (0, 0) circle (2);
+    \end{scope}
+    \begin{scope}
+      \clip (0, 0) circle (2);
+      \clip (1.5, -2.5) circle (2);
+      \fill[white] (-1.5, -2.5) circle (2);
+    \end{scope}
+    \begin{scope}[fill opacity=0.5]
+      \clip (0, 0) circle (2);
+      \clip (1.5, -2.5) circle (2);
+      \fill[green] (-1.5, -2.5) circle (2);
+    \end{scope}
+    \draw (-7, 2) node [text=black,right] {$Value = [0..1] \times [0..1] \times [0..1] \times [0..1]$};
+    \draw (0, 0) circle (2);
+    \draw (-1.5, -2.5) circle (2);
+    \draw (1.5, -2.5) circle (2);
+    \draw (0, 0) node [text=black, text width=2cm] {Resistance to refactoring};
+    \draw (-1.5, -2.5) node [text=black, text width=1.7cm] {Protection against regression};
+    \draw (1.5, -2.5) node [xshift=1em,text=black, text width=1.5cm] {Fast\\feedback};
+    \node at (-4, 0) (label A) {End-to-end tests};
+    \node at (4, 0) (label B) {Trivial tests};
+    \node at (0, -4.75) (label C) {Brittle tests};
+    \coordinate (A) at (-1, -1.15);
+    \coordinate (B) at (1, -1.15);
+    \coordinate (C) at (0, -2.75);
+    \draw [<-,out=300] (label A) to (A);
+    \draw [<-,in=45,out=240] (label B) to (B);
+    \draw [<-] (label C) to (C);
+  \end{tikzpicture} 
+\end{frame}
+
+\begin{frame}{In search of an ideal test}
+  \begin{tikzpicture}
+    \begin{scope}[fill opacity=0.5]
+      \clip (0, 0) circle (2);
+      \fill[blue] (-1.5, -2.5) circle (2);
+    \end{scope}
+    \begin{scope}[fill opacity=0.5]
+      \clip (-1.5, -2.5) circle (2);
+      \fill[blue] (1.5, -2.5) circle (2);
+    \end{scope}
+    \begin{scope}[fill opacity=0.5]
+      \clip (1.5, -2.5) circle (2);
+      \fill[blue] (0, 0) circle (2);
+    \end{scope}
+    \begin{scope}
+      \clip (0, 0) circle (2);
+      \clip (1.5, -2.5) circle (2);
+      \fill[white] (-1.5, -2.5) circle (2);
+    \end{scope}
+    \begin{scope}[fill opacity=0.5]
+      \clip (0, 0) circle (2);
+      \clip (1.5, -2.5) circle (2);
+      \fill[green] (-1.5, -2.5) circle (2);
+    \end{scope}
+    \draw (-7, 2) node [text=black,right] {$Value = [0..1] \times [0..1] \times [0..1] \times [0..1]$};
+    \draw (0, 0) circle (2);
+    \draw (-1.5, -2.5) circle (2);
+    \draw (1.5, -2.5) circle (2);
+    \draw (0, 0) node [text=black, text width=2cm] {Resistance to refactoring};
+    \draw (-1.5, -2.5) node [text=black, text width=1.7cm] {Protection against regression};
+    \draw (1.5, -2.5) node [xshift=1em,text=black, text width=1.5cm] {Fast\\feedback};
+    \node at (-4, 0) (label A) {End-to-end tests};
+    \node at (4, 0) (label B) {Trivial tests};
+    \node at (0, -4.75) (label C) {Brittle tests};
+    \node at (5, -1.5) (label D) {Unreachable ideal};
+    \coordinate (A) at (-1, -1.15);
+    \coordinate (B) at (1, -1.15);
+    \coordinate (C) at (0, -2.75);
+    \coordinate (D) at (0, -1.75);
+    \draw [<-,out=300] (label A) to (A);
+    \draw [<-,in=45,out=240] (label B) to (B);
+    \draw [<-] (label C) to (C);
+    \draw [<-,in=5,out=180] (label D) to (D);
+  \end{tikzpicture} 
+\end{frame}
+
+% Black-box testing examines the functionality of a system without knowing its
+% internal structure, typically built around specs and requirements.
+% White-box testing verifies the application's inner workings, tests are derived
+% from the source code.
+% Prefer black-box testing over white-box testing by default to maximize
+% resistance to refactoring. But white-box method can still be used when
+% analyzing the tests, use code coverage tools to see which code branches are not
+% exercised and then test them as if you don't know the inner workings.
+\begin{frame}{In search of an ideal test}
+  \begin{columns}[T]
+    \begin{column}[]{0.55\textwidth}
+      \includegraphics[width=\textwidth]{images/ideal_strategy.png}
+    \end{column}
+    \begin{column}[]{0.45\textwidth}
+      \begin{itemize}
+        \item \textit{Resistance to refactoring} is non-negotiable: Almost a binary choice
+        \item Test automation concepts can be traced back to the four pillars:
+        \begin{itemize}
+          \item The Test Pyramid
+          \item White-box versus black-box testing
+        \end{itemize}
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\section{Mocks and test fragility}
+\begin{frame}{Differentiating mocks from stubs}
+  \begin{columns}[T]
+    \begin{column}[]{0.5\textwidth}
+      \includegraphics[width=0.85\textwidth]{images/test_doubles.png}
+    \end{column}
+    \begin{column}[]{0.5\textwidth}
+      \begin{itemize}
+        \item Test doubles can be grouped into two types: \focus{mocks} and \focus{stubs}
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Differentiating mocks from stubs}
+  \begin{columns}[T]
+    \begin{column}[]{0.5\textwidth}
+      \includegraphics[width=0.85\textwidth]{images/test_doubles.png}
+      \includegraphics[width=0.85\textwidth]{images/stub_vs_mock.png}
+    \end{column}
+    \begin{column}[]{0.5\textwidth}
+      \begin{itemize}
+        \item Test doubles can be grouped into two types: \focus{mocks} and \focus{stubs}
+        \item \focus{Mocks} emulate and examine \textit{outcoming} interactions
+        \item \focus{Stubs} emulate \textit{incoming} interactions
+      \end{itemize}
+    \end{column}
+  \end{columns}
 \end{frame}
 \end{document}
